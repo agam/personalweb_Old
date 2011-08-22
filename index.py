@@ -13,17 +13,10 @@ class MainPage(webapp.RequestHandler):
 	output = template.render(path, template_values)
 	self.response.out.write(output)
 
-class AboutPage(webapp.RequestHandler):
-    def get(self):
-	path = os.path.join(os.path.dirname(__file__), 'templates', 'about.html')
-	f = open(path, 'r')
-	self.response.out.write(f.read())
-
 # Map urls
 application = webapp.WSGIApplication(
 	[('/', MainPage),
-	 ('/main/home', MainPage),
-	 ('/main/about', AboutPage)
+	 ('/index.html', MainPage),
 	], debug=True)
 
 def main():

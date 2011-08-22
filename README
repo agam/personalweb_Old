@@ -1,2 +1,6 @@
 Agam's Personal website, hosted on App Engine.
 
+The idea is to have an arbitrary number of sub-apps as part of this app.
+One will be a trivial landing page (this is the personal website bit),
+another will be the blog, and the rest are ... TBD.
+

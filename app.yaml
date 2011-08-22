@@ -5,10 +5,13 @@ api_version: 1
 
 handlers:
 - url: /
-  script: main.py
+  script: index.py
 
-- url: /main/.*
-  script: main.py
+- url: /index\.html
+  script: index.py
+
+- url: /blog/.*
+  script: blog.py
 
 - url: /static
   static_dir: static
