@@ -20,32 +20,25 @@
 
         function init_posterous() {
             // Some bookkeeping/setup
-            $("#status")
-                .hide()
-                .ajaxStart(function() {
-                        $(this).fadeIn('slow');
-                        })
-            .ajaxStop(function() {
-                    $(this).fadeOut('slow');
-                    });
+            $("#status").hide();
             var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
 
             // Make a call to the Posterous API (getting the public posts is really really slow, so might have to put this logic in python, and use memcache to avoid repeated queries.
+            $("#status").fadeIn('slow');
             $.getJSON('http://posterous.com/api/2/sites/1537630/posts/public?api_token=' + api_token + '&callback=?',
                     function(data) {
-                    $("#postlist").append("Returned with status: " + status);
-            var count = 1;
+                    $("#postlist").append("<ul>");
                     $.each(data, function(index, post) {
                         if (post) {
-                        $("#postlist").append("<p>" + post.title);
+                        $("#postlist").append("<li>" + post.title + "</li>");
                         }
                         count++;
                         }
                         );
-                        $("#postlist").append("<p> Count = " + count);
+                    $("#postlist").append("</ul>");
 
-
-                            });
+                    $("#status").fadeIn('slow');
+                    });
             $("#postlist li").mouseover(function() {
                     $(this).animate({'height': 50}, 'normal');
                     });
@@ -53,29 +46,18 @@
 
         google.setOnLoadCallback(init_posterous);
     </script>
-
     <!-- custom css for this page's layout -->
     <style type="text/css">
-        #load {
-            display: none;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            background: url(/static/images/loader.gif);
-            background-size:100% 100%;
-            width: 43px;
-            height: 43px;
-        }
     </style>
 
 </head>
 
 <body>
-    <h1>A better posterous client</h1>
+    <h1>A better posterous browser</h1>
 
-    <div id="status">Loading ...</div>
+    <div id="status"><img src="/static/images/loading.gif" /></div>
     <div id="postlist"> 
-        <h2>Here is a list of the headlines for all posts, sorted chronologically</h2>
+        <h2>Here is a list of the headlines for the last 20 posts, sorted chronologically</h2>
     </div>
 
     <footer>
