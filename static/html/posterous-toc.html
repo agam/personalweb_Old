@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- TODO(agam): Get rid of this header/footer duplication ! -->
+<head>
+    <meta charset="utf-8" />
+    <title>Posterous Browsing</title>
+    <meta name="description" content="Table of Contents  and browsing for Agam's Posterous">
+    <link href="static/css/css-mini-reset.css" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Droid+Sans|Calligraffitti' rel='stylesheet' type='text/css'>
+    <link href="static/css/main.css" rel="stylesheet" type="text/css" />
+
+    <!-- The posterous access code -->
+    <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
+    <script language="Javascript" type="text/javascript">
+        google.load("jquery", "1.6.2");
+        google.load("jqueryui", "1.8.16");
+
+        function init_posterous() {
+            $("#postlist").append("<p>Testing, testing ...");
+        }
+
+        google.setOnLoadCallback(init_posterous);
+    </script>
+</head>
+
+<body>
+    <h1>A better posterous client</h1>
+
+    <div id="postlist"> 
+        <h2>Here is a list of the headlines for all posts, sorted chronologically</h2>
+    </div>
+
+    <footer>
+    <p>The code for this website is <a href="https://github.com/agam/personalweb">available on Github</a>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License</a>.
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-16612682-3']);
+        _gaq.push(['_setDomainName', 'appengine.appspot.com']);
+        _gaq.push(['_setAllowHash', false]);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+    </script>
+</footer>
+</body>
+</html>
