@@ -6,6 +6,8 @@
     <meta charset="utf-8" />
     <title>Posterous Browsing</title>
     <meta name="description" content="Table of Contents  and browsing for Agam's Posterous">
+
+    <link href="/static/images/favicon.ico" rel="shortcut icon" />
     <link href="/static/css/css-mini-reset.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Droid+Sans|Calligraffitti' rel='stylesheet' type='text/css'>
     <link href="/static/css/main.css" rel="stylesheet" type="text/css" />
@@ -16,17 +18,44 @@
         google.load("jquery", "1.6.2");
         google.load("jqueryui", "1.8.16");
 
+        function hideLoader() {
+            $("#load").fadeOut('normal');
+            $("#status").html('');
+        }
+
         function init_posterous() {
-            $("#postlist").append("<p>Testing, testing ...");
+            $("#load").remove();
+            $("#load").fadeIn('normal');
+            $("$status").html("<p>Loading...");
+            $("#postlist").append("<p> Testing, testing ...");
+            $.getJSON('http://posterous.com/api/2/sites/1537630/posts/public', function(data) {
+                    $.each(data, function(index, post)
+                        $("#postlist").append("<p>" + post.title);
+                    });
         }
 
         google.setOnLoadCallback(init_posterous);
     </script>
+
+    <!-- custom css for this page's layout -->
+    <style type="text/css">
+        #load {
+            display: none;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: url(/static/images/loader.gif)
+            width: 43px
+            height: 43px
+        }
+    </style>
+
 </head>
 
 <body>
     <h1>A better posterous client</h1>
 
+    <div id="status"></div>
     <div id="postlist"> 
         <h2>Here is a list of the headlines for all posts, sorted chronologically</h2>
     </div>
