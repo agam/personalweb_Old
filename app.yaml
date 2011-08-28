@@ -17,4 +17,4 @@ handlers:
   static_dir: static
 
 - url: /.*
-  script: not_found.py
+  script: applets/not_found.py
