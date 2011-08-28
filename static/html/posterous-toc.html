@@ -30,17 +30,15 @@
                     $("#postlist").append("<ul>");
                     $.each(data, function(index, post) {
                         if (post) {
-                        $("#postlist").append("<li>" + post.title + "</li>");
+                        $("#postlist").append("<li>" + post.title + "   [<a href=\"" + post.full_url + "\">Open</a>]</li>");
                         }
-                        count++;
                         }
                         );
                     $("#postlist").append("</ul>");
-
-                    $("#status").fadeIn('slow');
+                    $("#status").fadeOut('slow');
                     });
             $("#postlist li").mouseover(function() {
-                    $(this).animate({'height': 50}, 'normal');
+                    $(this).animate({'height': 70}, 'normal');
                     });
         }
 
