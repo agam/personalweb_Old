@@ -12,25 +12,42 @@
     <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Droid+Sans|Calligraffitti' rel='stylesheet' type='text/css'>
     <link href="/static/css/main.css" rel="stylesheet" type="text/css" />
 
-    <!-- The posterous access code -->
+    <!-- Load jquery from Google -->
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
     <script language="Javascript" type="text/javascript">
         google.load("jquery", "1.6.2");
         google.load("jqueryui", "1.8.16");
 
-        function hideLoader() {
-            $("#load").fadeOut('normal');
-            $("#status").html('');
-        }
-
         function init_posterous() {
-            $("#load").remove();
-            $("#load").fadeIn('normal');
-            $("$status").html("<p>Loading...");
-            $("#postlist").append("<p> Testing, testing ...");
-            $.getJSON('http://posterous.com/api/2/sites/1537630/posts/public', function(data) {
-                    $.each(data, function(index, post)
+            // Some bookkeeping/setup
+            $("#status")
+                .hide()
+                .ajaxStart(function() {
+                        $(this).fadeIn('slow');
+                        })
+            .ajaxStop(function() {
+                    $(this).fadeOut('slow');
+                    });
+            var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
+
+            // Make a call to the Posterous API (getting the public posts is really really slow, so might have to put this logic in python, and use memcache to avoid repeated queries.
+            $.getJSON('http://posterous.com/api/2/sites/1537630/posts/public?api_token=' + api_token + '&callback=?',
+                    function(data) {
+                    $("#postlist").append("Returned with status: " + status);
+            var count = 1;
+                    $.each(data, function(index, post) {
+                        if (post) {
                         $("#postlist").append("<p>" + post.title);
+                        }
+                        count++;
+                        }
+                        );
+                        $("#postlist").append("<p> Count = " + count);
+
+
+                            });
+            $("#postlist li").mouseover(function() {
+                    $(this).animate({'height': 50}, 'normal');
                     });
         }
 
@@ -44,9 +61,10 @@
             position: absolute;
             right: 10px;
             top: 10px;
-            background: url(/static/images/loader.gif)
-            width: 43px
-            height: 43px
+            background: url(/static/images/loader.gif);
+            background-size:100% 100%;
+            width: 43px;
+            height: 43px;
         }
     </style>
 
@@ -55,7 +73,7 @@
 <body>
     <h1>A better posterous client</h1>
 
-    <div id="status"></div>
+    <div id="status">Loading ...</div>
     <div id="postlist"> 
         <h2>Here is a list of the headlines for all posts, sorted chronologically</h2>
     </div>
