@@ -10,6 +10,10 @@ handlers:
 - url: /index\.html
   script: index.py
 
+- url: /tasks/fetchposterous
+  script: fetchposterous.py
+  login: admin
+
 - url: /blog/.*
   script: blog.py
 

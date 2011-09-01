@@ -1,0 +1,4 @@
+cron:
+- description: Fetch posterous summaries
+  url: /tasks/fetchposterous
+  schedule: every 24 hours
