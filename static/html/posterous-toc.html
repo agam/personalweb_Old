@@ -18,28 +18,59 @@
         google.load("jquery", "1.6.2");
         google.load("jqueryui", "1.8.16");
 
-        function init_posterous() {
-            // Some bookkeeping/setup
-            $("#status").hide();
-            var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
+        var forward_prev = 0;
+        var forward_next = 0;
 
-            // Make a call to the Posterous API (getting the public posts is really really slow, so might have to put this logic in python, and use memcache to avoid repeated queries.
-            $("#status").fadeIn('slow');
-            $.getJSON('http://posterous.com/api/2/sites/1537630/posts/public?api_token=' + api_token + '&callback=?',
+        var end_prev = 0;
+        var end_next = 0;
+
+        var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
+
+        function init_posterous() {
+            $("#status").hide();
+
+            console.log("Calling beginning posts");
+            get_beginning_posts(0);
+            console.log("Calling Ending posts");
+            get_end_posts(0);
+        }
+
+        function populate_posts(divid, data) {
+            console.log("Populating posts");
+            $(divid).html("<ul>");
+            $.each(data, function(index, post) {
+                    if (post) {
+                        $(divid).append("<li>" + post.post_title + "  [<a href=\"" + post.post_url + "\">Open</a>]</li>");
+                    }
+                    });
+            $(divid).append("</ul>");
+            $(divid + " li").mouseover(function() {
+                    $(this).animate({'height': 70}, 'slow');
+                    });
+            $(divid + " li").mouseout(function() {
+                    $(this).animate({'height': 20}, 'slow');
+            });
+
+        }
+
+        function get_beginning_posts(postid) {
+            console.log("Getting beginning posts");
+            $("#status").fadeIn("slow");
+            $.getJSON('http://localhost:8081/posterous/getpagefront',
                     function(data) {
-                    $("#postlist").append("<ul>");
-                    $.each(data, function(index, post) {
-                        if (post) {
-                        $("#postlist").append("<li>" + post.title + "   [<a href=\"" + post.full_url + "\">Open</a>]</li>");
-                        }
-                        }
-                        );
-                    $("#postlist").append("</ul>");
-                    $("#status").fadeOut('slow');
-                    });
-            $("#postlist li").mouseover(function() {
-                    $(this).animate({'height': 70}, 'normal');
-                    });
+                        console.log("Got back json ...");
+                        populate_posts("#beginningpostslist", data);
+                        });
+                    $("#status").fadeOut("slow");
+        }
+
+        function get_end_posts(postid) {
+            $("#status").fadeIn("slow");
+            $.getJSON('http://localhost:8081/posterous/getpageback',
+                    function(data) {
+                        populate_posts("#endpostslist", data);
+                        });
+                    $("#status").fadeOut("slow");
         }
 
         google.setOnLoadCallback(init_posterous);
@@ -54,8 +85,19 @@
     <h1>A better posterous browser</h1>
 
     <div id="status"><img src="/static/images/loading.gif" /></div>
-    <div id="postlist"> 
-        <h2>Here is a list of the headlines for the last 20 posts, sorted chronologically</h2>
+    <div id="postheader"> 
+        <h2>Posterous content indexed from the beginning and from the end</h2>
+        <p>(Each page has 20 posts, content derived from <a href="http://agambrahma.posterous.com">agambrahma.posterous.com</a>, but pages here do not correspond to pages there)
+    </div>
+
+    <div id="beginningposts">
+        <p><b>Latest</b>
+        <div id="beginningpostslist"></div>
+    </div>
+
+    <div id="endposts">
+        <p><b>Oldest</b>
+        <div id="endpostslist"></div>
     </div>
 
     <footer>

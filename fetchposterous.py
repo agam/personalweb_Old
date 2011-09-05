@@ -49,13 +49,14 @@ while get_more_posts:
                 break
 
             newpost = PosterousPost(key_name = str(post["id"]),
+                    post_id = post["id"],
                     post_title = post["title"],
                     post_url = post["full_url"],
                     post_text = post["body_full"])
             newpost.post_title = post["title"]
             newpost.post_url = post["full_url"]
             newpost.post_text = post["body_full"]
-            logging.debug('Added a new post : ' + newpost.post_title)
+            logging.debug('Added a new post : ' + str(newpost.post_id) + ',' + newpost.post_title)
             newpost.put()
         page = page + 1
 
