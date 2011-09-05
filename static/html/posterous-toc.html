@@ -56,7 +56,7 @@
         function get_beginning_posts(postid) {
             console.log("Getting beginning posts");
             $("#status").fadeIn("slow");
-            $.getJSON('http://localhost:8081/posterous/getpagefront',
+            $.getJSON('http://agambrahma.appspot.com/posterous/getpagefront',
                     function(data) {
                         console.log("Got back json ...");
                         populate_posts("#beginningpostslist", data);
@@ -66,7 +66,7 @@
 
         function get_end_posts(postid) {
             $("#status").fadeIn("slow");
-            $.getJSON('http://localhost:8081/posterous/getpageback',
+            $.getJSON('http://agambrahma.appspot.com/posterous/getpageback',
                     function(data) {
                         populate_posts("#endpostslist", data);
                         });
