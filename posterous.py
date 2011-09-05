@@ -2,14 +2,14 @@ import logging
 import os
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
-from google.appengine.ext.webapp_util import run_wsgi_app
+from google.appengine.ext.webapp.util import run_wsgi_app
 
 class Posterous(webapp.RequestHandler):
     def get(self):
         pass
 
 application = webapp.WSGIApplication(
-        [('/posterous', Posterous),
+        [('/posterous/main', Posterous),
             ], debug=True)
 
 def main():
