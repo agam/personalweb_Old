@@ -17,6 +17,9 @@ handlers:
 - url: /blog/.*
   script: blog.py
 
+- url: /posterous/.*
+  script: posterous.py
+
 - url: /static
   static_dir: static
 
