@@ -15,28 +15,47 @@
     <!-- Load jquery from Google -->
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
     <script language="Javascript" type="text/javascript">
-        google.load("jquery", "1.6.2");
-        google.load("jqueryui", "1.8.16");
+        google.load("jquery", "1.6");
+        google.load("jqueryui", "1.8");
 
-        var forward_prev = 0;
-        var forward_next = 0;
-
-        var end_prev = 0;
-        var end_next = 0;
+        var total_posts = 0;
 
         var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
 
         function init_posterous() {
             $("#status").hide();
 
-            console.log("Calling beginning posts");
+            get_total_posts();
             get_beginning_posts(0);
-            console.log("Calling Ending posts");
             get_end_posts(0);
+
+            setup_slider("#beginningpostsslider", "#beginningpostslabel", "#beginningpostsfetch", "get_beginning_posts");
+            setup_slider("#endpostsslider", "#endpostslabel", "#endpostsfetch", "get_end_posts");
+        }
+
+        function setup_slider(sliderid, labelid, buttonid, func) {
+            $(sliderid).css("margin", "10px");
+            $(sliderid).css("height", "30px");
+            $(sliderid).slider({
+                value: 0,
+                min: 0,
+                max: Math.round(total_posts/20),
+                slide: function(event, ui) {
+                    $(labelid).html("Page: " + ui.value);
+                    $(buttonid).html("<a href=\"javascript:void(0)\" onclick=\"" + func + "(" + ui.value + ");\">Fetch</a>");
+                }
+            });
+            $(labelid).html("Page: 0");
+        }
+
+        function get_total_posts() {
+            url = 'http://localhost:8081/posterous/getcount';
+            $.getJSON(url, function(data) {
+                total_posts = data.count;
+            });
         }
 
         function populate_posts(divid, data) {
-            console.log("Populating posts");
             $(divid).html("<ul>");
             $.each(data, function(index, post) {
                     if (post) {
@@ -50,27 +69,32 @@
             $(divid + " li").mouseout(function() {
                     $(this).animate({'height': 20}, 'slow');
             });
-
         }
 
-        function get_beginning_posts(postid) {
-            console.log("Getting beginning posts");
+        function get_beginning_posts(page) {
+            url = 'http://localhost:8081/posterous/getposts?order=front';
+            if (page > 0) {
+                url = url + '&page=' + page;
+            }
             $("#status").fadeIn("slow");
-            $.getJSON('http://agambrahma.appspot.com/posterous/getpagefront',
+            $.getJSON(url,
                     function(data) {
-                        console.log("Got back json ...");
-                        populate_posts("#beginningpostslist", data);
-                        });
-                    $("#status").fadeOut("slow");
+                    populate_posts("#beginningpostslist", data);
+                    });
+            $("#status").fadeOut("slow");
         }
 
-        function get_end_posts(postid) {
+        function get_end_posts(page) {
+            var url = 'http://localhost:8081/posterous/getposts?order=back';
+            if (page > 0) {
+                url = url + '&page=' + postid;
+            }
             $("#status").fadeIn("slow");
-            $.getJSON('http://agambrahma.appspot.com/posterous/getpageback',
+            $.getJSON(url,
                     function(data) {
-                        populate_posts("#endpostslist", data);
-                        });
-                    $("#status").fadeOut("slow");
+                    populate_posts("#endpostslist", data);
+                    });
+            $("#status").fadeOut("slow");
         }
 
         google.setOnLoadCallback(init_posterous);
@@ -92,11 +116,15 @@
 
     <div id="beginningposts">
         <p><b>Latest</b>
+        <div id="beginningpostsslider"></div>
+        <span id="beginningpostslabel"></span><span id="beginningpostsfetch"></span>
         <div id="beginningpostslist"></div>
     </div>
 
     <div id="endposts">
         <p><b>Oldest</b>
+        <div id="endpostsslider"></div>
+        <span id="endpostslabel"></span><span id="endpostsfetch"></span>
         <div id="endpostslist"></div>
     </div>
 

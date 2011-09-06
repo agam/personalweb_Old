@@ -8,32 +8,38 @@ from models import PosterousPost
 
 # TODO(agam): use memcache
 
-class PosterousQueryFront(webapp.RequestHandler):
+class PosterousQuery(webapp.RequestHandler):
     def get(self):
         posterous_query = PosterousPost.all()
-        if self.request.get("postid"):
-            posterous_query.filter("post_id < " + str(self.request.get("postid")))
-            logging.debug("Filtering by " + post_id)
-        posterous_query.order("-post_id")
-        posterous_results = posterous_query.fetch(20)
-#        self.response.out.write('Content-Type: application/json')
+        offset = 0
+        if self.request.get("order") == "front":
+            posterous_query.order("-post_id")
+        else:
+            posterous_query.order("post_id")
+        if self.request.get("page"):
+            offset = page * 20
+        posterous_results = posterous_query.fetch(20, offset=offset)
 	self.response.out.write(simplejson.dumps([p.to_dict() for p in posterous_results]))
 
-class PosterousQueryBack(webapp.RequestHandler):
+def query_counter(q, cursor=None, limit=1000):
+    if cursor:
+        q.with_cursor (cursor)
+    count = q.count (limit=limit)
+    if count == limit:
+        return count + query_counter (q, q.cursor (), limit=limit)
+    return count
+
+
+class PosterousCount(webapp.RequestHandler):
     def get(self):
-        posterous_query = PosterousPost.all()
-        if self.request.get("postid"):
-            posterous_query.filter("post_id > " + str(self.request.get("postid")))
-            logging.debug("Filtering by " + post_id)
-        posterous_query.order("post_id")
-        posterous_results = posterous_query.fetch(20)
-#        self.response.out.write('Content-Type: application/json')
-	self.response.out.write(simplejson.dumps([p.to_dict() for p in posterous_results]))
+        posterous_query = PosterousPost.all();
+        posterous_result = query_counter(posterous_query)
+        self.response.out.write(simplejson.dumps({"count": posterous_result}))
 
 
 application = webapp.WSGIApplication(
-        [('/posterous/getpagefront', PosterousQueryFront),
-            ('/posterous/getpageback', PosterousQueryBack),
+        [('/posterous/getposts', PosterousQuery),
+         ('/posterous/getcount', PosterousCount),
             ], debug=True)
 
 def main():
