@@ -23,6 +23,12 @@ handlers:
 - url: /static
   static_dir: static
 
+- url: /_ah/mail/blogpost@agambrahma\.appspot\.com
+  script: blog_post_email.py
+
 - url: /.*
   static_files: static/html/404.html
   upload: static/html/404.html
+
+inbound_services:
+- mail

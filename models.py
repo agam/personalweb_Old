@@ -9,3 +9,11 @@ class PosterousPost(db.Model):
 
     def to_dict(self):
         return dict([(p, unicode(getattr(self, p))) for p in self.properties()])
+
+class BlogPost(db.Model):
+    """Info about a post on my blog"""
+    title = db.StringProperty(required=True)
+    slug = db.StringProperty(required=True)
+    body = db.TextProperty(required=True)
+    published = db.DateTimeProperty(auto_now_add=True)
+

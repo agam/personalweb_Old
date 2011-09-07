@@ -1,5 +1,4 @@
 import logging
-import os
 import simplejson
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
