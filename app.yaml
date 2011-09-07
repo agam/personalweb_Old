@@ -23,7 +23,7 @@ handlers:
 - url: /static
   static_dir: static
 
-- url: /_ah/mail/blogpost@agambrahma\.appspot\.com
+- url: /_ah/mail/blogpost@agambrahma\.appspotmail\.com
   script: blog_post_email.py
 
 - url: /.*
