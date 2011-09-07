@@ -42,7 +42,7 @@
         }
 
         function get_total_posts() {
-            var url = 'http://localhost:8081/posterous/getcount';
+            var url = 'http://agambrahma.appspot.com/posterous/getcount';
             $.getJSON(url, function(data) {
                 total_posts = data.count;
 
@@ -74,7 +74,7 @@
         }
 
         function get_beginning_posts(page) {
-            url = 'http://localhost:8081/posterous/getposts?order=front';
+            url = 'http://agambrahma.appspot.com/posterous/getposts?order=front';
             if (page > 0) {
                 url = url + '&page=' + page;
             }
@@ -87,7 +87,7 @@
         }
 
         function get_end_posts(page) {
-            var url = 'http://localhost:8081/posterous/getposts?order=back';
+            var url = 'http://agambrahma.appspot.com/posterous/getposts?order=back';
             if (page > 0) {
                 url = url + '&page=' + page;
             }

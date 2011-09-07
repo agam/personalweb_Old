@@ -1,25 +1,34 @@
 import logging
 import os
 import simplejson
+from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 from models import PosterousPost
 
-# TODO(agam): use memcache
-
 class PosterousQuery(webapp.RequestHandler):
     def get(self):
-        posterous_query = PosterousPost.all()
         offset = 0
-        if self.request.get("order") == "front":
-            posterous_query.order("-post_id")
-        else:
-            posterous_query.order("post_id")
         if self.request.get("page"):
             offset = int(self.request.get("page")) * 20
-        posterous_results = posterous_query.fetch(20, offset=offset)
-	self.response.out.write(simplejson.dumps([p.to_dict() for p in posterous_results]))
+        memcache_key = self.request.get("order") + str(offset)
+        results = memcache.get(memcache_key)
+        if results is not None:
+            self.response.out.write(results)
+            logging.debug("Scored a memcache hit for key: " + memcache_key)
+            return
+        else:
+            posterous_query = PosterousPost.all()
+            if self.request.get("order") == "front":
+                posterous_query.order("-post_id")
+            else:
+                posterous_query.order("post_id")
+            posterous_results = posterous_query.fetch(20, offset=offset)
+            results = simplejson.dumps([p.to_dict() for p in posterous_results])
+	    self.response.out.write(results)
+            if not memcache.add(memcache_key, results, 3600):
+                logging.error("Memcache insert failed for key :" + memcache_key)
 
 def query_counter(q, cursor=None, limit=1000):
     if cursor:
