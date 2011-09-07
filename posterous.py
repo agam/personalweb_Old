@@ -17,7 +17,7 @@ class PosterousQuery(webapp.RequestHandler):
         else:
             posterous_query.order("post_id")
         if self.request.get("page"):
-            offset = page * 20
+            offset = int(self.request.get("page")) * 20
         posterous_results = posterous_query.fetch(20, offset=offset)
 	self.response.out.write(simplejson.dumps([p.to_dict() for p in posterous_results]))
 

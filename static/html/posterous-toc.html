@@ -11,6 +11,8 @@
     <link href="/static/css/css-mini-reset.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Droid+Sans|Calligraffitti' rel='stylesheet' type='text/css'>
     <link href="/static/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- Load the 'darkness' jqueryUI theme -->
+    <link href="/static/css/ui-darkness/jquery.ui.all.css" rel="stylesheet" type="text/css" />
 
     <!-- Load jquery from Google -->
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
@@ -22,36 +24,36 @@
 
         var api_token = 'BouCofdeoIrIfbpzqiBfroAxfhIiJjxJGeyGgckqhpvazirtlfIzBeIunGfmeyewlCJgpIBjfCvenGjgjezxzfDmrAdbCGouEhcc';
 
-        function init_posterous() {
-            $("#status").hide();
-
-            get_total_posts();
-            get_beginning_posts(0);
-            get_end_posts(0);
-
-            setup_slider("#beginningpostsslider", "#beginningpostslabel", "#beginningpostsfetch", "get_beginning_posts");
-            setup_slider("#endpostsslider", "#endpostslabel", "#endpostsfetch", "get_end_posts");
-        }
-
         function setup_slider(sliderid, labelid, buttonid, func) {
-            $(sliderid).css("margin", "10px");
-            $(sliderid).css("height", "30px");
             $(sliderid).slider({
                 value: 0,
                 min: 0,
                 max: Math.round(total_posts/20),
                 slide: function(event, ui) {
-                    $(labelid).html("Page: " + ui.value);
+                    $(labelid).html(" Page: " + ui.value + "   ");
                     $(buttonid).html("<a href=\"javascript:void(0)\" onclick=\"" + func + "(" + ui.value + ");\">Fetch</a>");
-                }
+                },
             });
-            $(labelid).html("Page: 0");
+            $(sliderid).css("min-height", "15px");
+            $(sliderid).css("min-width", "50px");
+            $(labelid).html("Page: 0   ");
+            console.log("Slider value = " + $(sliderid).slider("value"));
+            $(sliderid).slider("enable");
         }
 
         function get_total_posts() {
-            url = 'http://agambrahma.appspot.com/posterous/getcount';
+            var url = 'http://localhost:8081/posterous/getcount';
             $.getJSON(url, function(data) {
                 total_posts = data.count;
+
+                // Complete initialization here, since setup depends on total_posts (the slider).
+                get_beginning_posts(0);
+                get_end_posts(0);
+
+                setup_slider("#beginningpostsslider", "#beginningpostslabel",
+                    "#beginningpostsfetch", "get_beginning_posts");
+                setup_slider("#endpostsslider", "#endpostslabel",
+                    "#endpostsfetch", "get_end_posts");
             });
         }
 
@@ -67,12 +69,12 @@
                     $(this).animate({'height': 70}, 'slow');
                     });
             $(divid + " li").mouseout(function() {
-                    $(this).animate({'height': 20}, 'slow');
+                    $(this).animate({'height': 25}, 'slow');
             });
         }
 
         function get_beginning_posts(page) {
-            url = 'http://agambrahma.appspot.com/posterous/getposts?order=front';
+            url = 'http://localhost:8081/posterous/getposts?order=front';
             if (page > 0) {
                 url = url + '&page=' + page;
             }
@@ -85,9 +87,9 @@
         }
 
         function get_end_posts(page) {
-            var url = 'http://agambrahma.appspot.com/posterous/getposts?order=back';
+            var url = 'http://localhost:8081/posterous/getposts?order=back';
             if (page > 0) {
-                url = url + '&page=' + postid;
+                url = url + '&page=' + page;
             }
             $("#status").fadeIn("slow");
             $.getJSON(url,
@@ -95,6 +97,12 @@
                     populate_posts("#endpostslist", data);
                     });
             $("#status").fadeOut("slow");
+        }
+
+        function init_posterous() {
+            $("#status").hide();
+
+            total_posts = get_total_posts();
         }
 
         google.setOnLoadCallback(init_posterous);
@@ -115,16 +123,16 @@
     </div>
 
     <div id="beginningposts">
-        <p><b>Latest</b>
-        <div id="beginningpostsslider"></div>
+        <p><b>Latest : </b>
         <span id="beginningpostslabel"></span><span id="beginningpostsfetch"></span>
+        <div id="beginningpostsslider"></div>
         <div id="beginningpostslist"></div>
     </div>
 
     <div id="endposts">
-        <p><b>Oldest</b>
-        <div id="endpostsslider"></div>
+        <p><b>Oldest : </b>
         <span id="endpostslabel"></span><span id="endpostsfetch"></span>
+        <div id="endpostsslider"></div>
         <div id="endpostslist"></div>
     </div>
 
