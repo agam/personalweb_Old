@@ -65,11 +65,12 @@
                     }
                     });
             $(divid).append("</ul>");
+            <!-- TODO(agam): Show content preview too -->
             $(divid + " li").mouseover(function() {
-                    $(this).animate({'height': 70}, 'slow');
+                    $(this).animate({'height': 70, 'fontSize': '1.5em'}, 'normal');
                     });
             $(divid + " li").mouseout(function() {
-                    $(this).animate({'height': 25}, 'slow');
+                    $(this).animate({'height': 25, 'fontSize': '1em'}, 'normal');
             });
         }
 
