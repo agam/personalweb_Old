@@ -22,12 +22,14 @@ def CreateSlug(title):
 
 class AddBlogPost(InboundMailHandler):
     def receive(self, mail_message):
-        html_bodies = list(mail_message.bodies('text/plain'))
-        if len(html_bodies) > 1:
+        text_bodies = list(mail_message.bodies('text/plain'))
+        if len(text_bodies) > 1:
             logging.info("Weird -- received multi-part message!")
-        body = html_bodies[0]
+        body = text_bodies[0]
+        logging.info("%s: %s" % ('Message bodies', ''.join('msg %d: %s; ' % x for x in enumerate(text_bodies))))
 
         logging.debug("Received message from : " + mail_message.sender + ", to : " + mail_message.to + ", with subject: " + mail_message.subject + ", messsage is : " + body[1].decode())
+
         blogpost = BlogPost(title=mail_message.subject,
                 slug=CreateSlug(mail_message.subject),
                 body = body[1].decode())

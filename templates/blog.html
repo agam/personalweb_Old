@@ -12,22 +12,36 @@
     <link href="/static/css/main.css" rel="stylesheet" type="text/css" />
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css"> -->
     <style>
-        footer { position: absolute; bottom: 0; background: #edd8ba; }
+        footer { background: #edd8ba; }
         .blogpost { padding: 10px; margin-top: 20px; margin-bottom: 20px; }
         .blogposttitle { font-family: 'Droid Sans'; font-size: x-large; }
         .blogposttitle a:link { color: orange; }
         .blogpostdate { font-family: 'Droid Sans'; text-align: right; }
     </style>
+    <script type="text/javascript" src="/static/js/showdown.js"></script>
+    <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
+    <script language="Javascript" type="text/javascript">
+        google.load("jquery", "1.6");
+
+        function convert_blog_text() {
+            var converter = new Showdown.converter();
+            $(".blogpostbody").each(function(index) {
+                    $(this).append(converter.makeHtml( $(this).children("textarea")[0].value ));
+            });
+        }
+
+        google.setOnLoadCallback(convert_blog_text);
+    </script>
 </head>
 
 <body>
-    <h1>Bloggy</h1>
+    <h1 style="font-size:4em; text-align:center; margin-bottom:50px;">Bloggy</h1>
     <!-- Multiple articles case -->
     {% for article in articles %}
     <div class="blogpost">
         <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
         <div class="blogpostbody">
-            <p>{{ article.body }}</p>
+            <textarea style="visibility:hidden;">{{ article.body }}</textarea>
         </div>
         <div class="blogpostdate">{{ article.published }}</div>
     </div>
@@ -37,7 +51,7 @@
     <div class="blogpost">
         <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article_slug }}">{{ article_title|upper }}</a></div>
         <div class="blogpostbody">
-            <p>{{ article_body }}</p>
+            <textarea style="visibility:hidden;">{{ article_body }}</textarea>
         </div>
         <div class="blogpostdate">{{ article_published }}</div>
     </div>
