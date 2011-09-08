@@ -1,7 +1,7 @@
 
 /* Body and Background */
 
-body { margin-left: 10%; margin-right: 10%; color: black; background; white; }
+body { margin: 0px auto; color: black; background: white; width: 940px; border: 1px; }
 
 /* Headlines etc */
 
@@ -17,5 +17,5 @@ li { font-family: 'Crafty Girls'; }
 
 /* Misc */
 
-footer { margin-top: 100px; }
+footer { padding: 10px; margin-top: 100px; border-radius: 15px; -moz-border-radius: 15px; text-align: center; }
 

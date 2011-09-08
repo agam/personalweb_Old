@@ -1,0 +1,13 @@
+indexes:
+
+- kind: BlogPost
+  properties:
+  - name: slug
+  - name: published
+    direction: desc
+
+- kind: PosterousPost
+  properties:
+  - name: post_id
+  - name: post_id
+    direction: desc

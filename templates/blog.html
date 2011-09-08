@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Blog</title>
+    <meta name="description" content="Agam's Blog">
+
+    <link href="/static/images/favicon.ico" rel="shortcut icon" />
+    <link href="/static/css/css-mini-reset.css" rel="stylesheet" type="text/css" />
+    <link href='http://fonts.googleapis.com/css?family=Crafty+Girls|Droid+Sans|Calligraffitti' rel='stylesheet' type='text/css'>
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css" />
+    <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css"> -->
+    <style>
+        footer { position: absolute; bottom: 0; background: #edd8ba; }
+        .blogpost { padding: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .blogposttitle { font-family: 'Droid Sans'; font-size: x-large; }
+        .blogposttitle a:link { color: orange; }
+        .blogpostdate { font-family: 'Droid Sans'; text-align: right; }
+    </style>
+</head>
+
+<body>
+    <h1>Bloggy</h1>
+    <!-- Multiple articles case -->
+    {% for article in articles %}
+    <div class="blogpost">
+        <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
+        <div class="blogpostbody">
+            <p>{{ article.body }}</p>
+        </div>
+        <div class="blogpostdate">{{ article.published }}</div>
+    </div>
+    {% endfor %}
+    <!-- Single article case -->
+    {% if single_post %}
+    <div class="blogpost">
+        <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article_slug }}">{{ article_title|upper }}</a></div>
+        <div class="blogpostbody">
+            <p>{{ article_body }}</p>
+        </div>
+        <div class="blogpostdate">{{ article_published }}</div>
+    </div>
+    {% endif %}
+
+    <footer>
+    <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License</a>.
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-16612682-3']);
+        _gaq.push(['_setDomainName', 'appengine.appspot.com']);
+        _gaq.push(['_setAllowHash', false]);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+     </script>
+     </footer>
+</body>
+
+
