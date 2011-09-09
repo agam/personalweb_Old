@@ -13,12 +13,15 @@
     <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css"> -->
     <style>
         footer { background: #edd8ba; }
-        .blogpost { padding: 10px; margin-top: 20px; margin-bottom: 20px; }
+        .blogpost { padding: 10px; margin-top: 20px; margin-bottom: 40px; }
         .blogposttitle { font-family: 'Droid Sans'; font-size: x-large; }
         .blogposttitle a:link { color: orange; }
         .blogposttitle a:visited { color: orange; }
-        .blogpostdate { font-family: 'Droid Sans'; text-align: right; }
+        .blogpostbody { font-size: 125%; }
+        .blogpostdate { font-family: 'Droid Sans'; text-align: right; font-size: 75%; margin-top: 10px; }
         .blogpostcommentslink { font-family: 'Calligraffitti'; font-size: 75%; text-align: right; }
+        #blogpostswrapper { margin-bottom: 100px; }
+        #disqus_thread { font-size: 80%; }
     </style>
     <script type="text/javascript" src="/static/js/showdown.js"></script>
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
@@ -39,6 +42,7 @@
 <body>
     <h1 style="font-size:4em; text-align:center; margin-bottom:50px;">Bloggy</h1>
     <!-- Note: for a single post, the len(articles) == 1 -->
+    <div id="blogpostswrapper">
     {% for article in articles %}
     <div class="blogpost">
             <div class="blogposttitle"><a href = "/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
@@ -51,6 +55,7 @@
         {% endif %}
     </div>
     {% endfor %}
+</div> <!-- end blogpostswrapper -->
 
     {% if single_post %}
         <!-- Single article case -->
@@ -89,8 +94,6 @@
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-16612682-3']);
-        _gaq.push(['_setDomainName', 'appengine.appspot.com']);
-        _gaq.push(['_setAllowHash', false]);
         _gaq.push(['_trackPageview']);
 
         (function() {

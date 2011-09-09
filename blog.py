@@ -51,9 +51,9 @@ class MainPage(webapp.RequestHandler):
             q.order('-published')
             blog_results = q.fetch(5)
             template_values = { 'articles': blog_results }
-            # The blog's main page is cached for two minutes
+            # The blog's main page is cached for one minute.
             logging.info("Added main page to cache")
-            memcache.add("mainpage", blog_results, 120)
+            memcache.add("mainpage", blog_results, 60)
 
         output = template.render(path, template_values)
         self.response.out.write(output)

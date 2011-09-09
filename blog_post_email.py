@@ -3,6 +3,7 @@ import logging
 import re
 import unicodedata
 
+from google.appengine.api import memcache
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.mail_handlers import InboundMailHandler
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -37,6 +38,8 @@ class AddBlogPost(InboundMailHandler):
                 slug=CreateSlug(mail_message.subject),
                 body = body[1].decode())
         blogpost.put()
+        # Remove main page from cache, if it's present there.
+        memcache.delete("mainpage")
 
 application = webapp.WSGIApplication(
         [(AddBlogPost.mapping())], debug=True)
