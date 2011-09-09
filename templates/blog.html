@@ -3,7 +3,13 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Blog</title>
+    <title>
+        {% if single_post %}
+        {{ articles.0.title }}
+        {% else %}
+        Agam's Blog
+        {% endif %}
+    </title>
     <meta name="description" content="Agam's Blog">
 
     <link href="/static/images/favicon.ico" rel="shortcut icon" />
@@ -22,6 +28,7 @@
         .blogpostcommentslink { font-family: 'Calligraffitti'; font-size: 75%; text-align: right; }
         #blogpostswrapper { margin-bottom: 100px; }
         #disqus_thread { font-size: 80%; }
+        #dsq-pagination { display: none; }
     </style>
     <script type="text/javascript" src="/static/js/showdown.js"></script>
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
@@ -37,6 +44,18 @@
 
         google.setOnLoadCallback(convert_blog_text);
     </script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-16612682-3']);
+        _gaq.push(['_trackPageview']);
+
+        (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+         })();
+     </script>
+
 </head>
 
 <body>
@@ -51,7 +70,7 @@
         </div>
         <div class="blogpostdate">{{ article.published }}</div>
         {% if not single_post %}
-            <div class="blogpostcommentslink"><a href = "/blog/article/{{ article.slug }}#disqus_thread">View Comments</a></div>
+            <div class="blogpostcommentslink"><a href = "http://agambrahma.appspot.com/blog/article/{{ article.slug }}#disqus_thread">View Comments</a></div>
         {% endif %}
     </div>
     {% endfor %}
@@ -91,17 +110,6 @@
 
     <footer>
     <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/">Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License</a>.
-    <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-16612682-3']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-         })();
-     </script>
      </footer>
 </body>
 
