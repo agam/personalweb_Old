@@ -18,6 +18,7 @@
         .blogposttitle a:link { color: orange; }
         .blogposttitle a:visited { color: orange; }
         .blogpostdate { font-family: 'Droid Sans'; text-align: right; }
+        .blogpostcommentslink { font-family: 'Calligraffitti'; font-size: 75%; text-align: right; }
     </style>
     <script type="text/javascript" src="/static/js/showdown.js"></script>
     <script src="https://www.google.com/jsapi?key=ABQIAAAAnjiQb--VssnWxB8gJJANHRT8vATYeMg6i0IPOit6GndEekLi2xQ4F_cMnVxB8nQzMgqGJOUYavreNw" type="text/javascript"></script>
@@ -40,16 +41,47 @@
     <!-- Note: for a single post, the len(articles) == 1 -->
     {% for article in articles %}
     <div class="blogpost">
-        <div class="blogposttitle"><a href = "/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
+            <div class="blogposttitle"><a href = "/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
         <div class="blogpostbody">
             <textarea style="visibility:hidden;">{{ article.body }}</textarea>
         </div>
         <div class="blogpostdate">{{ article.published }}</div>
+        {% if not single_post %}
+            <div class="blogpostcommentslink"><a href = "/blog/article/{{ article.slug }}#disqus_thread">View Comments</a></div>
+        {% endif %}
     </div>
     {% endfor %}
-    <!-- Single article case -->
+
     {% if single_post %}
-        <!-- TODO(agam): Add comments -->
+        <!-- Single article case -->
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        var disqus_shortname = 'agamweb';
+        var disqus_url = "http://agambrahma.appspot.com/blog/article/{{ article.slug }}";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+         dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+         (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+         })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    {% else %}
+        <script type="text/javascript">
+        var disqus_shortname = 'agamweb';
+        var disqus_url = "http://agambrahma.appspot.com/blog/main";
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        </script>
     {% endif %}
 
     <footer>
