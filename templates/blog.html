@@ -16,6 +16,7 @@
         .blogpost { padding: 10px; margin-top: 20px; margin-bottom: 20px; }
         .blogposttitle { font-family: 'Droid Sans'; font-size: x-large; }
         .blogposttitle a:link { color: orange; }
+        .blogposttitle a:visited { color: orange; }
         .blogpostdate { font-family: 'Droid Sans'; text-align: right; }
     </style>
     <script type="text/javascript" src="/static/js/showdown.js"></script>
@@ -36,10 +37,10 @@
 
 <body>
     <h1 style="font-size:4em; text-align:center; margin-bottom:50px;">Bloggy</h1>
-    <!-- Multiple articles case -->
+    <!-- Note: for a single post, the len(articles) == 1 -->
     {% for article in articles %}
     <div class="blogpost">
-        <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
+        <div class="blogposttitle"><a href = "/blog/article/{{ article.slug }}">{{ article.title|upper }}</a></div>
         <div class="blogpostbody">
             <textarea style="visibility:hidden;">{{ article.body }}</textarea>
         </div>
@@ -48,13 +49,7 @@
     {% endfor %}
     <!-- Single article case -->
     {% if single_post %}
-    <div class="blogpost">
-        <div class="blogposttitle"><a href = "http://agambrahma.appspot.com/blog/article/{{ article_slug }}">{{ article_title|upper }}</a></div>
-        <div class="blogpostbody">
-            <textarea style="visibility:hidden;">{{ article_body }}</textarea>
-        </div>
-        <div class="blogpostdate">{{ article_published }}</div>
-    </div>
+        <!-- TODO(agam): Add comments -->
     {% endif %}
 
     <footer>

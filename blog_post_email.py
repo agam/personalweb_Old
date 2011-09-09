@@ -18,10 +18,13 @@ def CreateSlug(title):
     slug = unicode(re.sub('[^\w\s-]', '', slug).strip().lower())
     return re.sub('[-\s]+', '-', slug)
 
-#TODO(agam): Verify that the email came from me !
 
 class AddBlogPost(InboundMailHandler):
     def receive(self, mail_message):
+        if mail_message.sender != 'Agam Brahma <agam.brahma@gmail.com>':
+            logging.error('Received email from an email address other than my own ?!')
+            return
+
         text_bodies = list(mail_message.bodies('text/plain'))
         if len(text_bodies) > 1:
             logging.info("Weird -- received multi-part message!")
