@@ -12,6 +12,3 @@ indexes:
   - name: post_id
     direction: desc
 
-- kind: QuickLink
-  properties:
-  - name: shortlink
