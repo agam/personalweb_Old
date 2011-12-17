@@ -21,6 +21,9 @@ handlers:
 - url: /blog/.*
   script: blog.py
 
+- url: /quicklink/.*
+  script: quicklink.py
+
 - url: /posterous/.*
   script: posterous.py
 

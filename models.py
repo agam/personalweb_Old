@@ -17,3 +17,8 @@ class BlogPost(db.Model):
     body = db.TextProperty(required=True)
     published = db.DateTimeProperty(auto_now_add=True)
 
+class QuickLink(db.Model):
+    """A quicklink for personal use"""
+    shortlink = db.StringProperty(required=True)
+    longlink = db.StringProperty(required=True)
+
