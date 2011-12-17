@@ -34,7 +34,7 @@ handlers:
   script: blog_post_email.py
 
 - url: /_ah/mail/addquicklink@agambrahma\.appspotmail\.com
-  script: quicklink.py
+  script: addquicklink.py
 
 - url: /.*
   static_files: static/html/404.html
