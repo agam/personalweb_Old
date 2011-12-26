@@ -17,9 +17,10 @@ class AddQuickLink(InboundMailHandler):
         text_bodies = list(mail_message.bodies('text/plain'))
         body = text_bodies[0]
 
-        logging.debug("Received message from : " + mail_message.sender + ", to : " + mail_message.to + ", with subject: " + mail_message.subject + ", messsage is : " + body[1].decode())
+        logging.debug("Received message from : " + mail_message.sender + ", to : " + mail_message.to + ", with subject: " + mail_message.subject + ", messsage is : [" + body[1].decode() + "]")
 
-        link = QuickLink(shortlink=mail_message.subject, longlink=body[1].decode())
+        longlink_url = ''.join(body[1].decode().splitlines())
+        link = QuickLink(shortlink=mail_message.subject, longlink=longlink_url)
         link.put()
 
 
