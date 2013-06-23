@@ -5,15 +5,15 @@ body { margin: 0px auto; color: black; background: white; width: 640px; border: 
 
 /* Headlines etc */
 
-h1 { font-family: 'Calligraffitti', cursive; font-size: 250%; }
+h1 { font-family: 'Life Savers', cursive; font-size: 250%; }
 
-h2 { color: orange; font-family: 'Droid Sans', sans-serif; }
+h2 { color: #8258FA; font-family: 'Quantico', sans-serif; }
 
 /* Paragraph text and list text */
 
-p { font-family: 'Crafty Girls', cursive; }
+p { font-family: 'Open Sans', cursive; }
 
-li { font-family: 'Crafty Girls'; }
+li { font-family: 'Open Sans'; }
 
 /* Misc */
 
