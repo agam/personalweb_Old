@@ -1,15 +1,14 @@
 package agamsweb
 
 import (
-	"io/ioutil"
+  "fmt"
 	"net/http"
 )
 
 func init() {
-	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/helloworld", notFoundHandler)
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-  index, _ := ioutil.ReadFile("static/html/index.html")
-  w.Write([]byte(index))
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+  fmt.Fprintf(w, "<h1>Hello, World!</h1>");
 }
